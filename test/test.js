@@ -50,10 +50,12 @@ describe('Mongoose Pages', function() {
     //# test cases
     it('should get 100 users', function(done) {
         User.find({}, function(err, pager) {
-             assert.equal(pager.length, 10);
+            assert.equal(err, null);
+            assert.equal(pager.length, 10);
             done(err);
         })
     })
+
 
     // it('should ', function(done) {
     //     User.findPaginated({}, function(err, pager) {
