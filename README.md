@@ -9,10 +9,16 @@ Developer-friendly pagination plugin for Mongoose ODM.
 
 ## Usage
 
-1. Load the `mongoose-pager` module
-2. To implement pagination capability for a scgema, pass the schema to `mongoose-pager`
-3. The schema now has a method named `.findPaginated()`, which is a superset of `.find()` and accepts an optional pagination object at the end, after the callback function
-4. The callback function will receive the same arguments as `.find()` with additional pagination details in the end
+1. Load the `mongoose-pager` module in your app
+2. To implement pagination capability for a schema, pass the schema to `mongoose-pager`
+3. The schema now has a method named `.findPaginated()`, which is a superset of `.find()`, and accepts two additional pagination options at the end, right after the callback function - number of pages and the page number
+4. The callback function will receive the error and the result objects as in `.find()`. The result object contains the details of the paged query.
+
+    {
+        documents: Array; list of documents
+        totalPages: Number; total page count
+        pageNumber: Number; current page number
+    }
 
 Example:
 
@@ -20,9 +26,14 @@ Example:
     var Schema = mongoose.Schema;
     var mongoosePages = require('mongoose-pager');
 
-    var userSchema = new Schema({name: String, age: Number});
-    mongoosePages(userSchema);
+    var UserSchema = new Schema({
+        username: String,
+        points: Number,
+        email: String
+    })
 
-    var userModel = mongoose.model('user', userSchema);
-    userModel.findPaginated();
+    mongoosePages(UserSchema);
+
+    var User = mongoose.model('User', UserSchema);
+    User.findPaginated();
 
