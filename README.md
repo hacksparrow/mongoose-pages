@@ -5,7 +5,7 @@ Developer-friendly pagination plugin for Mongoose ODM.
 
 ## Installation
 
-   $ npm install mongoose-pager
+   $ npm install mongoose-pages
 
 ## Usage
 
@@ -18,10 +18,10 @@ Example:
 
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
-    var mongoosePager = require('mongoose-pager');
+    var mongoosePages = require('mongoose-pager');
 
     var userSchema = new Schema({name: String, age: Number});
-    mongoosePager(userSchema);
+    mongoosePages(userSchema);
 
     var userModel = mongoose.model('user', userSchema);
     userModel.findPaginated();
