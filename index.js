@@ -31,28 +31,40 @@ var anchorPagination = function (conditions, fields, options, callback, limit, a
     if (anchorId) conditions._id = { $gte: anchorId }
     if (limit) options.limit = limit;
 
-    model.count({}, function (err, count) {
+    model.find(conditions, fields, options, function (err, docs) {
 
-        var totalPages = count;
+        var result = {}
 
-        model.find(conditions, fields, options, function (err, docs) {
+        if (err && err.name == 'CastError' && err.type == 'ObjectId') {
+            result.documents = [];
+            result.totalPages = 0;
+            callback(null, result);
+        } else if (docs && docs.length) {
 
-            var result = { documents: docs }
+            result.documents = docs;
 
-            if (limit) result.totalPages = Math.floor(totalPages / limit);
-            else result.totalPages = 1;
+            model.count({}, function (err, count) {
 
-            if (result.totalPages > 1) {
-                result.previousAnchorId = anchorId;
-                result.nextAnchorId = docs[ docs.length - 1 ]._id.toString();
-            }
+                var totalPages = count;
 
+                if (limit) result.totalPages = Math.floor(totalPages / limit);
+                else result.totalPages = 1;
+
+                if (result.totalPages > 1) {
+                    result.previousAnchorId = anchorId;
+                    result.nextAnchorId = docs[ docs.length - 1 ]._id.toString();
+                }
+
+                callback(err, result);
+
+            })
+        } else {
+            result.documents = [];
+            result.totalPages = 0;
             callback(err, result);
-        });
+        }
 
-
-    });
-
+    })
 
 
 }
