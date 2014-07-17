@@ -5,23 +5,27 @@ Developer-friendly pagination plugin for Mongoose ODM.
 
 ### Installation
 
-   $ npm install mongoose-pages
+```
+$ npm install mongoose-pages
+```
 
 ### Usage
 
-Mongoose Pager offers pagination via two different implementations - skip and anchor. Chose whichever works for your application.
+Mongoose Pager offers pagination via two different implementations - **skip** and **anchor**. Both the implementations add a new method named `findPaginated()` to the model, which works like the normal `find()` method, except it accepts optional pagination options.
+
+Chose whichever works for your application, their details and differences are explained below.
 
 **Skip**
 
-Pagination via skipping will give you the familiar
+When you work with skip, you will get to work with the familiar `docsPerPage` and `pageNumber` objects.
 
 **Anchor**
 
+When you work with anchor, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
 
-1. Load the `mongoose-pager` module in your app
-2. To implement pagination capability for a schema, pass the schema to `mongoose-pager`
-3. The schema now has a method named `.findPaginated()`, which is a superset of `.find()`, and accepts two additional pagination options at the end, right after the callback function - number of pages and the page number
-4. The callback function will receive the error and the result objects as in `.find()`. The result object contains the details of the paged query.
+An anchor id is the document id which is used as a marker for making the query. Basically you tell Mongoose, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
+
+
 
     {
         documents: Array; list of documents
