@@ -3,19 +3,19 @@ Mongoose Pages
 
 Developer-friendly pagination plugin for Mongoose ODM.
 
-### Installation
+## Installation
 
 ```
 $ npm install mongoose-pages
 ```
 
-### Usage
+## Usage
 
 Mongoose Pages offers pagination via two different implementations - **skip** and **anchor**. Both the implementations add a new method named `findPaginated()` to the model, which works like the regular `find()` method, except it accepts optional pagination options.
 
 Chose whichever works for your application, their details and differences are explained below.
 
-**Skip**
+###skip
 
 When you work with skip, you will get to work with the familiar `docsPerPage` and `pageNumber` objects.
 
@@ -58,17 +58,17 @@ User.findPaginated({}, function (err, result) {
 
 ```
 
-Pros:
+**Pros**
 
 1. Familiar concept of `docsPerPage` and `pageNumber`
 2. Can jump to any page number
 
-Cons:
+**Cons**
 
 1. Performance will degrade as the number of documents increase. This is a limitation is MongoDB.
 2. Not recommended for high traffic websites with large number of documents in collection.
 
-**Anchor**
+###anchor
 
 With anchoring, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
 
@@ -91,6 +91,7 @@ The result object will have the following structure.
 
 Here is an example of using the the anchor method for implementing pagination.
 
+```
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var mongoosePages = require('mongoose-pages');
@@ -111,15 +112,16 @@ User.findPaginated({}, function (err, result) {
     if (err) throw err;
     console.log(result);
 }, docsPerPage, anchorId); // pagination options go here
+```
 
 If the `anchorId` is not specified, it is assumed to be the first page.
 
-Pros:
+**Pros**
 
 1. Performance is not affected with increasing number of documents in the collection.
 2. Recommended for high traffic websites.
 
-Cons:
+**Cons**
 
 1. Page navigation is sequential
 2. Cannot jump to any page number
