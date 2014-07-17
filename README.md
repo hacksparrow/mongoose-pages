@@ -1,15 +1,22 @@
-mongoose-pager
+Mongoose Pager
 ==============
 
 Developer-friendly pagination plugin for Mongoose ODM.
 
-## Installation
+### Installation
 
    $ npm install mongoose-pages
 
-## Usage
+### Usage
 
 Mongoose Pager offers pagination via two different implementations - skip and anchor. Chose whichever works for your application.
+
+**Skip**
+
+Pagination via skipping will give you the familiar
+
+**Anchor**
+
 
 1. Load the `mongoose-pager` module in your app
 2. To implement pagination capability for a schema, pass the schema to `mongoose-pager`

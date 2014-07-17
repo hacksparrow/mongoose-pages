@@ -1,6 +1,6 @@
 var assert = require('assert');
 var mongoose = require('mongoose');
-var mongoosePages = require('../');
+var mongoosePages = require('../lib/');
 
 var limit, anchorId;
 var db = mongoose.connect('mongodb://localhost/mongoose-pages');
@@ -12,11 +12,6 @@ var UserSchema = new mongoose.Schema({
 })
 mongoosePages.anchor(UserSchema);
 var User = mongoose.model('User', UserSchema);
-
-// User.findPaginated('-_id -__v', function(err, docs) {
-//     console.log(docs);
-// }, 2);
-// return;
 
 describe('mongoosePages.anchor', function() {
 
