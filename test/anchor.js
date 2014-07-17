@@ -84,20 +84,20 @@ describe('mongoosePages.anchor', function() {
         })
     })
 
-    it('should set `nextAnchorId` and `previousAnchorId` as `undefined` if there is only one page', function(done) {
+    it('should set `nextAnchorId` and `prevAnchorId` as `undefined` if there is only one page', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.ok(result.nextAnchorId == undefined);
-            assert.ok(result.previousAnchorId == undefined);
+            assert.ok(result.prevAnchorId == undefined);
             done(err);
         })
     })
 
-    it('should set `nextAnchorId` to a doc id, and `previousAnchorId` to `undefined` on the first page', function(done) {
+    it('should set `nextAnchorId` to a doc id, and `prevAnchorId` to `undefined` on the first page', function(done) {
 
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
-            assert.ok(result.previousAnchorId == undefined);
+            assert.ok(result.prevAnchorId == undefined);
             assert.ok(result.nextAnchorId.length == 24);
             done(err);
         }, 10)
@@ -106,7 +106,7 @@ describe('mongoosePages.anchor', function() {
     // it('should get the next 10 users', function(done) {
     //     User.findPaginated({}, function(err, result) {
     //         assert.equal(err, null);
-    //         assert.ok(result.previousAnchorId.length == 24);
+    //         assert.ok(result.prevAnchorId.length == 24);
     //         assert.ok(result.nextAnchorId.length == 24);
     //         assert.equal(result.documents.length, 10);
     //         assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));

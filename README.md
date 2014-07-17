@@ -1,4 +1,4 @@
-Mongoose Pager
+Mongoose Pages
 ==============
 
 Developer-friendly pagination plugin for Mongoose ODM.
@@ -11,7 +11,7 @@ $ npm install mongoose-pages
 
 ### Usage
 
-Mongoose Pager offers pagination via two different implementations - **skip** and **anchor**. Both the implementations add a new method named `findPaginated()` to the model, which works like the normal `find()` method, except it accepts optional pagination options.
+Mongoose Pages offers pagination via two different implementations - **skip** and **anchor**. Both the implementations add a new method named `findPaginated()` to the model, which works like the regular `find()` method, except it accepts optional pagination options.
 
 Chose whichever works for your application, their details and differences are explained below.
 
@@ -19,34 +19,78 @@ Chose whichever works for your application, their details and differences are ex
 
 When you work with skip, you will get to work with the familiar `docsPerPage` and `pageNumber` objects.
 
+The result object will have the following structure.
+
+```
+{
+    documents: Array; list of documents
+    totalPages: Number; total number of pages, as per the `docsPerPage` value
+    prevPage: NUmber; the previous page number
+    nextPage: Number; the next page number
+}
+```
+
+`prevPage` will be `undefined` for the first page. `nextPage` will be `undefined` for the last page.
+
+Here is an example of using the the skip method for implementing pagination.
+
+```
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var mongoosePages = require('mongoose-pages');
+
+var UserSchema = new Schema({
+    username: String,
+    points: Number,
+    email: String
+})
+
+mongoosePages.skip(UserSchema); // the findPaginated() method is added this way
+
+var docsPerPage = 10;
+var pageNumber = 1;
+
+var User = mongoose.model('User', UserSchema);
+User.findPaginated({}, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+}, docsPerPage, pageNumber); // pagination options go here
+
+```
+
 **Anchor**
 
-When you work with anchor, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
+With anchoring, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
 
-An anchor id is the document id which is used as a marker for making the query. Basically you tell Mongoose, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
+An anchor id is the document id which is used as a marker for making the query to MongoDB. Basically you tell Mongo, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
 
+The result object will have the following structure.
 
+```
+{
+    documents: Array; list of documents
+    totalPages: Number; total page count
+    prevAnchorId: String; ObjectId which was used as the anchor id in the last request
+    nextAnchorId: String; ObjectId which should be used as the anchor id in the next request
+}
+```
 
-    {
-        documents: Array; list of documents
-        totalPages: Number; total page count
-        pageNumber: Number; current page number
-    }
+`prevAnchorId` will be `undefined` for the first page. `nextAnchorId` will be `undefined` for the last page.
 
-Example:
+Here is an example of using the the anchor method for implementing pagination.
 
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
-    var mongoosePages = require('mongoose-pager');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var mongoosePages = require('mongoose-pages');
 
-    var UserSchema = new Schema({
-        username: String,
-        points: Number,
-        email: String
-    })
+var UserSchema = new Schema({
+    username: String,
+    points: Number,
+    email: String
+})
 
-    mongoosePages(UserSchema);
+mongoosePages.anchor(UserSchema);
 
-    var User = mongoose.model('User', UserSchema);
-    User.findPaginated();
+var User = mongoose.model('User', UserSchema);
+User.findPaginated();
 
