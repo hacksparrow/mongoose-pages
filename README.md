@@ -64,6 +64,8 @@ With anchoring, you get to work with `docsPerPage`, but lose the concept of `pag
 
 An anchor id is the document id which is used as a marker for making the query to MongoDB. Basically you tell Mongo, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
 
+NOTE: For pagination via anchoring, you will need to use an autoincrementing `_id` value; the default implementation of `_id` works just fine. If you don't like the default implementation of `_id`, you will need implement something of your own.
+
 The result object will have the following structure.
 
 ```
@@ -91,6 +93,14 @@ var UserSchema = new Schema({
 
 mongoosePages.anchor(UserSchema);
 
+var docsPerPage = 10;
+var anchorId = '53c797a2043db36f2b673cd1';
+
 var User = mongoose.model('User', UserSchema);
-User.findPaginated();
+User.findPaginated({}, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+}, docsPerPage, anchorId); // pagination options go here
+
+If the `anchorId` is not specified, it is assumed to be the first page.
 
