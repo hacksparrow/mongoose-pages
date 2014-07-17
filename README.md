@@ -58,6 +58,16 @@ User.findPaginated({}, function (err, result) {
 
 ```
 
+Pros:
+
+1. Familiar concept of `docsPerPage` and `pageNumber`
+2. Can jump to any page number
+
+Cons:
+
+1. Performance will degrade as the number of documents increase. This is a limitation is MongoDB.
+2. Not recommended for high traffic websites with large number of documents in collection.
+
 **Anchor**
 
 With anchoring, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
@@ -103,4 +113,14 @@ User.findPaginated({}, function (err, result) {
 }, docsPerPage, anchorId); // pagination options go here
 
 If the `anchorId` is not specified, it is assumed to be the first page.
+
+Pros:
+
+1. Performance is not affected with increasing number of documents in the collection.
+2. Recommended for high traffic websites.
+
+Cons:
+
+1. Page navigation is sequential
+2. Cannot jump to any page number
 
