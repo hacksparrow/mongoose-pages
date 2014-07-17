@@ -132,7 +132,7 @@ If the `anchorId` is not specified, it is assumed to be the first page.
 
 ## License
 
-Copyright (c) 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
+Copyright © 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
