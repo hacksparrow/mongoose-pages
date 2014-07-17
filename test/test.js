@@ -10,22 +10,20 @@ var UserSchema = new mongoose.Schema({
     points: Number,
     email: String
 })
-
 mongoosePages.anchor(UserSchema);
-
 var User = mongoose.model('User', UserSchema);
-User.findPaginated({_id: '53c6a40d9e16a67a1c9c9322'}, 'username', function() {
 
-}, 10, 1);
-
-return;
+// User.findPaginated('-_id -__v', function(err, docs) {
+//     console.log(docs);
+// }, 2);
+// return;
 
 describe('mongoosePages.anchor', function() {
 
 
-
     // # make entries in the db, before testing
     var numberOfEntries = 27;
+
     before(function(done) {
 
         var populate = function populate(i, total, cb) {
@@ -33,7 +31,7 @@ describe('mongoosePages.anchor', function() {
             if (i > total) return cb();
 
             var now = Date.now();
-            var username = 'dancer' + now;
+            var username = 'dancer' + now + Math.floor(Math.random() * 100000000);
             var points = Math.floor(now * Math.random()/ 100000000);
             var email = now + '@disco.org';
 
@@ -66,13 +64,25 @@ describe('mongoosePages.anchor', function() {
         })
     })
 
-
-    limit = 10;
-    it('should get first 10 users', function(done) {
+    it('should set `nextAnchorId` and `previousAnchorId` as `undefined` if there is only one page', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
+            assert.ok(result.nextAnchorId == undefined);
+            assert.ok(result.previousAnchorId == undefined);
+            done(err);
+        })
+    })
+
+    limit = 10;
+
+    it('should get the first 10 users', function(done) {
+        User.findPaginated({}, function(err, result) {
+            assert.equal(err, null);
+            assert.ok(result.previousAnchorId == undefined);
+            assert.ok(result.nextAnchorId.length == 24);
             assert.equal(result.documents.length, 10);
             assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
+            anchorId = result.documents[limit-1]._id; // id of the last document
             done(err);
         }, limit)
     })
@@ -81,22 +91,27 @@ describe('mongoosePages.anchor', function() {
     it('should get the next 10 users after ' + anchorId, function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
+            assert.ok(result.nextAnchorId.length == 24);
+            assert.ok(result.previousAnchorId.length == 24);
             assert.equal(result.documents.length, 10);
-            anchorId = result.documents[limit-1]._id; // id of the last document
             assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
+            anchorId = result.documents[limit-1]._id; // id of the last document
             done(err);
         }, limit, anchorId)
     })
 
+return;
+
     it('should get the remaining 7 users after' + anchorId, function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
+            assert.ok(result.nextAnchorId.length == 24);
+            assert.ok(result.previousAnchorId.length == 24);
             assert.equal(result.documents.length, 7);
             assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
             done(err);
         }, limit, anchorId)
     })
-
 
     it('should return an empty array for non-existent id', function(done) {
         User.findPaginated({}, function(err, result) {

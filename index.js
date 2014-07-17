@@ -1,39 +1,60 @@
 
 var anchorPagination = function (conditions, fields, options, callback, limit, anchorId) {
 
+    var model = this;
 
+    // re-assign params
     if ('function' == typeof conditions) {
-        callback = conditions;
-        conditions = {};
+        //console.log('A');
         limit = fields;
         anchorId = options;
+        callback = conditions;
+        conditions = {};
         fields = null;
-        options = null;
+        options = {};
     } else if ('function' == typeof fields) {
-        callback = fields;
+        //console.log('B');
         limit = options;
         anchorId = callback;
+        callback = fields;
         fields = null;
-        options = null;
+        options = {};
     } else if ('function' == typeof options) {
-        callback = options;
-        limit = callback;
+        //console.log('C');
         anchorId = limit;
-        options = null;
+        limit = callback;
+        callback = options;
+        options = {};
     }
 
-    // // get the raw mongodb collection object
-    // var mq = new Query({}, options, this, this.collection);
-    //     mq.select(fields);
+    // set pagination filters
+    if (anchorId) conditions._id = { $gte: anchorId }
+    if (limit) options.limit = limit;
 
-    // if (this.schema.discriminatorMapping && mq._selectedInclusively()) {
-    //     mq.select(this.schema.options.discriminatorKey);
-    // }
+    model.count({}, function (err, count) {
 
-    // return mq.find(conditions, callback);
+        var totalPages = count;
 
-    var q = this.find(conditions);
-    console.log(q);
+        model.find(conditions, fields, options, function (err, docs) {
+
+            var result = { documents: docs }
+
+            if (limit) result.totalPages = Math.floor(totalPages / limit);
+            else result.totalPages = 1;
+
+            if (result.totalPages > 1) {
+                result.previousAnchorId = anchorId;
+                result.nextAnchorId = docs[ docs.length - 1 ]._id.toString();
+            }
+
+            callback(err, result);
+        });
+
+
+    });
+
+
+
 }
 
 var skipPagination = function () {
