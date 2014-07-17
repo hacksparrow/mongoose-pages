@@ -66,7 +66,7 @@ User.findPaginated({}, function (err, result) {
 
 **Cons**
 
-1. Performance will degrade as the number of documents increase. This is a limitation is MongoDB.
+1. Performance will degrade as the number of documents increase. This is a limitation is [MongoDB's skip](http://docs.mongodb.org/manual/reference/method/cursor.skip/).
 2. Not recommended for high traffic websites with large number of documents in collection.
 
 ###anchor

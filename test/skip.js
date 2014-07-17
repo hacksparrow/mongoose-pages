@@ -13,7 +13,7 @@ var UserSchema = new mongoose.Schema({
 mongoosePages.skip(UserSchema);
 var User = mongoose.model('User', UserSchema);
 
-describe('mongoosePages.anchor', function() {
+describe('mongoosePages.skip', function() {
 
 
     // # make entries in the db, before testing
@@ -84,46 +84,46 @@ describe('mongoosePages.anchor', function() {
         })
     })
 
-    it('should set `nextAnchorId` and `previousAnchorId` as `undefined` if there is only one page', function(done) {
+    it('should set `nextPage` and `prevPage` as `undefined` if there is only one page', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
-            assert.ok(result.nextAnchorId == undefined);
-            assert.ok(result.previousAnchorId == undefined);
+            assert.ok(undefined == typeof result.prevPag);
+            assert.ok(undefined == typeof result.nextPage);
             done(err);
         })
     })
 
-    it('should set `nextAnchorId` to a doc id, and `previousAnchorId` to `undefined` on the first page', function(done) {
+    it('should set `nextPage` to a doc id, and `prevPage` to `undefined` on the first page', function(done) {
 
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
-            assert.ok(result.previousAnchorId == undefined);
-            assert.ok(result.nextAnchorId.length == 24);
+            assert.ok(undefined == typeof result.prevPag);
+            assert.ok('Number' == typeof result.nextPage);
             done(err);
         }, 10)
     })
 
-    // it('should get the next 10 users', function(done) {
-    //     User.findPaginated({}, function(err, result) {
-    //         assert.equal(err, null);
-    //         assert.ok(result.previousAnchorId.length == 24);
-    //         assert.ok(result.nextAnchorId.length == 24);
-    //         assert.equal(result.documents.length, 10);
-    //         assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
-    //         done(err);
-    //     }, limit)
-    // })
+    it('should get the next 10 users', function(done) {
+        User.findPaginated({}, function(err, result) {
+            assert.equal(err, null);
+            assert.ok('Number' == typeof result.prevPage);
+            assert.ok('Number' == typeof result.nextPage);
+            assert.equal(result.documents.length, 10);
+            assert.equal(result.totalPages, Math.floor(numberOfEntries / 10));
+            done(err);
+        }, 10, 2)
+    })
 
-    it('should return an empty array for a non-existent id', function(done) {
+    it('should return an empty array for a non-existent page number', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.equal(result.documents.length, 0);
             assert.equal(result.totalPages, 0);
             done(err);
-        }, 10, '999997a2047db76f2c670000')
+        }, 10, -1)
     })
 
-    it('should return an empty array for an invalid id', function(done) {
+    it('should return an empty array for an invalid page number', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.equal(result.documents.length, 0);
