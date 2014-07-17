@@ -75,7 +75,7 @@ With anchoring, you get to work with `docsPerPage`, but lose the concept of `pag
 
 An anchor id is the document id which is used as a marker for making the query to MongoDB. Basically you tell Mongo, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
 
-NOTE: For pagination via anchoring, you will need to use an autoincrementing `_id` value; the default implementation of `_id` works just fine. If you don't like the default implementation of `_id`, you will need implement something of your own.
+**NOTE**: For pagination via anchoring, you will need to use an autoincrementing `_id` value; the default implementation of `_id` works just fine. If you don't like the default implementation of `_id`, you will need implement something of your own.
 
 The result object will have the following structure.
 
