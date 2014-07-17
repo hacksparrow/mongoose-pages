@@ -9,6 +9,8 @@ Developer-friendly pagination plugin for Mongoose ODM.
 
 ## Usage
 
+Mongoose Pager offers pagination via two different implementations - skip and anchor. Chose whichever works for your application.
+
 1. Load the `mongoose-pager` module in your app
 2. To implement pagination capability for a schema, pass the schema to `mongoose-pager`
 3. The schema now has a method named `.findPaginated()`, which is a superset of `.find()`, and accepts two additional pagination options at the end, right after the callback function - number of pages and the page number

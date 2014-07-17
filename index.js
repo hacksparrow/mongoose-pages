@@ -36,14 +36,16 @@ var anchorPagination = function (conditions, fields, options, callback, limit, a
         var result = {}
 
         if (err && err.name == 'CastError' && err.type == 'ObjectId') {
+
             result.documents = [];
             result.totalPages = 0;
             callback(null, result);
+
         } else if (docs && docs.length) {
 
             result.documents = docs;
 
-            model.count({}, function (err, count) {
+            model.count(conditions, function (err, count) {
 
                 var totalPages = count;
 
@@ -58,6 +60,7 @@ var anchorPagination = function (conditions, fields, options, callback, limit, a
                 callback(err, result);
 
             })
+
         } else {
             result.documents = [];
             result.totalPages = 0;
