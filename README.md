@@ -45,7 +45,7 @@ var UserSchema = new Schema({
     email: String
 })
 
-mongoosePages.skip(UserSchema); // the findPaginated() method is added this way
+mongoosePages.skip(UserSchema); // makes the findPaginated() method available
 
 var docsPerPage = 10;
 var pageNumber = 1;
@@ -60,8 +60,9 @@ User.findPaginated({}, function (err, result) {
 
 **Pros**
 
-1. Familiar concept of `docsPerPage` and `pageNumber`
-2. Can jump to any page number
+1. Familiar concept of `docsPerPage` and `pageNumber`.
+2. Can implemented paged navigation system.
+3. Can jump to any page.
 
 **Cons**
 
@@ -102,7 +103,7 @@ var UserSchema = new Schema({
     email: String
 })
 
-mongoosePages.anchor(UserSchema);
+mongoosePages.anchor(UserSchema); // makes the findPaginated() method available
 
 var docsPerPage = 10;
 var anchorId = '53c797a2043db36f2b673cd1';
@@ -120,9 +121,34 @@ If the `anchorId` is not specified, it is assumed to be the first page.
 
 1. Performance is not affected with increasing number of documents in the collection.
 2. Recommended for high traffic websites.
+3. Navigation is previou-next based.
 
 **Cons**
 
-1. Page navigation is sequential
-2. Cannot jump to any page number
+1. Page navigation is sequential.
+2. Pages cannot be referenced via page numbers.
+3. Cannot jump to pages. However, it can jump to anchor points, once you have the reference.
 
+
+## License
+
+Copyright (c) 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
