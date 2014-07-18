@@ -1,4 +1,4 @@
-Mongoose Pages
+Mongoose Pages [![NPM version](https://badge.fury.io/js/mongoose-pages.svg)](https://badge.fury.io/js/mongoose-pages)
 ==============
 
 Developer-friendly pagination plugin for Mongoose ODM.
