@@ -111,9 +111,27 @@ describe('mongoosePages.skip', function() {
             assert.equal(result.prevPage, 1);
             assert.equal(result.nextPage, 3);
             assert.equal(result.documents.length, 10);
-            assert.equal(result.totalPages, Math.floor(numberOfEntries / 10));
+            assert.equal(result.totalPages, Math.ceil(numberOfEntries / 10));
             done(err);
         }, 10, 2)
+    })
+
+    it('should get the last 7 users', function(done) {
+        User.findPaginated({}, function(err, result) {
+            assert.equal(err, null);
+            assert.equal(result.documents.length, 7);
+            assert.equal(result.totalPages, Math.ceil(numberOfEntries / 10));
+            done(err);
+        }, 10, 3)
+    })
+
+    it('should set `nextPage` to a `undefined`, and `prevPage` to a number on the last page', function(done) {
+        User.findPaginated({}, function(err, result) {
+            assert.equal(err, null);
+            assert.ok('number' == typeof result.prevPage);
+            assert.ok(undefined == result.nextPage);
+            done(err);
+        }, 10, 3)
     })
 
     it('should return an error for a negative page number', function(done) {
