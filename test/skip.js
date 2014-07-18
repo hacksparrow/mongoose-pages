@@ -51,6 +51,34 @@ describe('mongoosePages.skip', function() {
 
     //# test cases
 
+    describe('page count tests', function () {
+
+        it('should have 27 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 27);
+                done(err);
+            }, 1)
+        })
+
+        it('should have 4 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 6);
+                done(err);
+            }, 5)
+        })
+
+        it('should have 3 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 3);
+                done(err);
+            }, 10)
+        })
+
+    });
+
     it('should get all ' + numberOfEntries + ' users', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
@@ -111,7 +139,6 @@ describe('mongoosePages.skip', function() {
             assert.equal(result.prevPage, 1);
             assert.equal(result.nextPage, 3);
             assert.equal(result.documents.length, 10);
-            assert.equal(result.totalPages, Math.ceil(numberOfEntries / 10));
             done(err);
         }, 10, 2)
     })
@@ -120,7 +147,6 @@ describe('mongoosePages.skip', function() {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.equal(result.documents.length, 7);
-            assert.equal(result.totalPages, Math.ceil(numberOfEntries / 10));
             done(err);
         }, 10, 3)
     })
@@ -141,19 +167,19 @@ describe('mongoosePages.skip', function() {
         }, 10, -1)
     })
 
+    it('should return an error for an invalid page number', function(done) {
+        User.findPaginated({}, function(err, result) {
+            assert.ok(err);
+            done();
+        }, 10, 'x')
+    })
+
     it('should return an empty array a non-existent positive page number', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.equal(result.documents.length, 0);
             done(err);
         }, 10, 1000)
-    })
-
-    it('should return an error for an invalid page number', function(done) {
-        User.findPaginated({}, function(err, result) {
-            assert.ok(err);
-            done();
-        }, 10, 'x')
     })
 
 })
