@@ -73,9 +73,11 @@ User.findPaginated({}, function (err, result) {
 
 With anchoring, you get to work with `docsPerPage`, but lose the concept of `pageNumber`; instead you work with an `anchorId`.
 
-An anchor id is the document id which is used as a marker for making the query to MongoDB. Basically you tell Mongo, "Give me `docsPerPage` items from `anchorId` onwards". The document with the `anchorId` is not included in the result.
+An anchor id is the document id which is used as a marker for making the query to MongoDB. Basically you tell Mongo, "Give me `docsPerPage` items from `anchorId` onwards".
 
-**NOTE**: For pagination via anchoring, you will need to use an autoincrementing `_id` value; the default implementation of `_id` works just fine. If you don't like the default implementation of `_id`, you will need implement something of your own, which is numerically auto incrementing.
+If the anchor id is not passed, it is assumed to be making a request for the first page. You get the `nextAnchorId` value from the result of the first page, to request for the second page etc. The document with the `anchorId` is not included in the result.
+
+**NOTE**: For pagination via anchoring, you will need to use an autoincrementing `_id` value; the default implementation of `_id` works just fine. If you don't like the default implementation of `_id`, you will need to implement `_id` of your own, which numerically autoincrements.
 
 The result object will have the following structure.
 
@@ -114,8 +116,6 @@ User.findPaginated({}, function (err, result) {
     console.log(result);
 }, docsPerPage, anchorId); // pagination options go here
 ```
-
-If the `anchorId` is not specified, it is assumed to be the first page.
 
 **Pros**
 
