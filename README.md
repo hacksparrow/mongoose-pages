@@ -117,6 +117,15 @@ User.findPaginated({}, function (err, result) {
 }, docsPerPage, anchorId); // pagination options go here
 ```
 
+If you want to request the first page, just ommit the `anchorId` parameter.
+
+```
+User.findPaginated({}, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+}, docsPerPage);
+```
+
 **Pros**
 
 1. Performance is not affected with increasing number of documents in the collection.
