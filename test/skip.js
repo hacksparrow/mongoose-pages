@@ -19,7 +19,7 @@ describe('mongoosePages.skip', function() {
     // # make entries in the db, before testing
     var numberOfEntries = 27;
 
-    beforeEach(function(done) {
+    before(function(done) {
 
         var populate = function populate(i, total, cb) {
 
@@ -121,7 +121,7 @@ describe('mongoosePages.skip', function() {
         })
     })
 
-    it('should set `nextPage` to a page number, and `prevPage` to `undefined` on the first page', function(done) {
+    it('should set `nextPage` to a page number, and `prevPage` should be `undefined` on the first page', function(done) {
 
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
@@ -151,7 +151,7 @@ describe('mongoosePages.skip', function() {
         }, 10, 3)
     })
 
-    it('should set `nextPage` to a `undefined`, and `prevPage` to a number on the last page', function(done) {
+    it('should set `prevPage` to a number on the last page, and `nextPage` should be `undefined`', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.ok('number' == typeof result.prevPage);

@@ -19,7 +19,7 @@ describe('mongoosePages.anchor', function() {
     // # make entries in the db, before testing
     var numberOfEntries = 27;
 
-    beforeEach(function(done) {
+    before(function(done) {
 
         var populate = function populate(i, total, cb) {
 
@@ -103,16 +103,23 @@ describe('mongoosePages.anchor', function() {
         }, 10)
     })
 
-    // it('should get the next 10 users', function(done) {
-    //     User.findPaginated({}, function(err, result) {
-    //         assert.equal(err, null);
-    //         assert.ok(result.prevAnchorId.length == 24);
-    //         assert.ok(result.nextAnchorId.length == 24);
-    //         assert.equal(result.documents.length, 10);
-    //         assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
-    //         done(err);
-    //     }, limit)
-    // })
+    it('should get the next 10 users', function(done) {
+
+        User.findPaginated({}, function(err, result) {
+//console.log(result.nextAnchorId);
+            User.findPaginated({}, function(err, result) {
+                //console.log(result);
+                assert.equal(err, null);
+                assert.ok(result.prevAnchorId.length == 24);
+                assert.ok(result.nextAnchorId.length == 24);
+                assert.equal(result.documents.length, 10);
+                assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
+                done(err);
+            }, 10, result.nextAnchorId)
+
+        }, 10)
+
+    })
 
     it('should return an empty error for a non-existent id', function(done) {
         User.findPaginated({}, function(err, result) {
