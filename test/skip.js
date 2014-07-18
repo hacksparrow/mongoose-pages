@@ -116,16 +116,17 @@ describe('mongoosePages.skip', function() {
         }, 10, 2)
     })
 
-    it('should return an error for a non-existent negative page number', function(done) {
+    it('should return an error for a negative page number', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.ok(err);
-            done(err);
+            done();
         }, 10, -1)
     })
 
-    it('should return an error a non-existent positive page number', function(done) {
+    it('should return an empty array a non-existent positive page number', function(done) {
         User.findPaginated({}, function(err, result) {
-            assert.ok(err);
+            assert.equal(err, null);
+            assert.equal(result.documents.length, 0);
             done(err);
         }, 10, 1000)
     })
@@ -133,7 +134,7 @@ describe('mongoosePages.skip', function() {
     it('should return an error for an invalid page number', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.ok(err);
-            done(err);
+            done();
         }, 10, 'x')
     })
 
