@@ -1,6 +1,6 @@
 var assert = require('assert');
 var mongoose = require('mongoose');
-var mongoosePages = require('../lib/');
+var mongoosePages = require('../');
 
 var limit, anchorId;
 var connection = mongoose.createConnection('mongodb://localhost/mongoose-pages');
