@@ -106,14 +106,11 @@ describe('mongoosePages.anchor', function() {
     it('should get the next 10 users', function(done) {
 
         User.findPaginated({}, function(err, result) {
-//console.log(result.nextAnchorId);
             User.findPaginated({}, function(err, result) {
-                //console.log(result);
                 assert.equal(err, null);
                 assert.ok(result.prevAnchorId.length == 24);
                 assert.ok(result.nextAnchorId.length == 24);
                 assert.equal(result.documents.length, 10);
-                assert.equal(result.totalPages, Math.floor(numberOfEntries / limit));
                 done(err);
             }, 10, result.nextAnchorId)
 
@@ -135,6 +132,34 @@ describe('mongoosePages.anchor', function() {
             assert.equal(result, undefined);
             done();
         }, 10, 'x')
+    })
+
+    describe('page count tests', function () {
+
+        it('should have 27 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 27);
+                done(err);
+            }, 1)
+        })
+
+        it('should have 4 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 6);
+                done(err);
+            }, 5)
+        })
+
+        it('should have 3 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 3);
+                done(err);
+            }, 10)
+        })
+
     })
 
 })

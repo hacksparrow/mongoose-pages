@@ -51,34 +51,6 @@ describe('mongoosePages.skip', function() {
 
     //# test cases
 
-    describe('page count tests', function () {
-
-        it('should have 27 pages', function(done) {
-            User.findPaginated({}, function(err, result) {
-                assert.equal(err, null);
-                assert.equal(result.totalPages, 27);
-                done(err);
-            }, 1)
-        })
-
-        it('should have 4 pages', function(done) {
-            User.findPaginated({}, function(err, result) {
-                assert.equal(err, null);
-                assert.equal(result.totalPages, 6);
-                done(err);
-            }, 5)
-        })
-
-        it('should have 3 pages', function(done) {
-            User.findPaginated({}, function(err, result) {
-                assert.equal(err, null);
-                assert.equal(result.totalPages, 3);
-                done(err);
-            }, 10)
-        })
-
-    });
-
     it('should get all ' + numberOfEntries + ' users', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
@@ -182,6 +154,33 @@ describe('mongoosePages.skip', function() {
         }, 10, 1000)
     })
 
+    describe('page count tests', function () {
+
+        it('should have 27 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 27);
+                done(err);
+            }, 1)
+        })
+
+        it('should have 4 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 6);
+                done(err);
+            }, 5)
+        })
+
+        it('should have 3 pages', function(done) {
+            User.findPaginated({}, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 3);
+                done(err);
+            }, 10)
+        })
+
+    })
 })
 
 
