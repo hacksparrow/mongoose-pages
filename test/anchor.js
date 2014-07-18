@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var mongoosePages = require('../lib/');
 
 var limit, anchorId;
-var db = mongoose.connect('mongodb://localhost/mongoose-pages');
+var connection = mongoose.createConnection('mongodb://localhost/mongoose-pages');
 
 var UserSchema = new mongoose.Schema({
     username: String,
@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
     email: String
 })
 mongoosePages.anchor(UserSchema);
-var User = mongoose.model('User', UserSchema);
+var User = connection.model('User', UserSchema);
 
 describe('mongoosePages.anchor', function() {
 
@@ -46,7 +46,7 @@ describe('mongoosePages.anchor', function() {
     })
 
     // # after testing, close the db connection
-    after(function() { db.connection.close(); })
+    after(function() { connection.close(); })
 
 
     //# test cases
@@ -114,21 +114,19 @@ describe('mongoosePages.anchor', function() {
     //     }, limit)
     // })
 
-    it('should return an empty array for a non-existent id', function(done) {
+    it('should return an empty error for a non-existent id', function(done) {
         User.findPaginated({}, function(err, result) {
             assert.equal(err, null);
             assert.equal(result.documents.length, 0);
-            assert.equal(result.totalPages, 0);
-            done(err);
+            done();
         }, 10, '999997a2047db76f2c670000')
     })
 
-    it('should return an empty array for an invalid id', function(done) {
+    it('should return an error for an invalid id', function(done) {
         User.findPaginated({}, function(err, result) {
-            assert.equal(err, null);
-            assert.equal(result.documents.length, 0);
-            assert.equal(result.totalPages, 0);
-            done(err);
+            assert.ok(err);
+            assert.equal(result, undefined);
+            done();
         }, 10, 'x')
     })
 
