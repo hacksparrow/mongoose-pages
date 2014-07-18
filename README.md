@@ -117,7 +117,7 @@ User.findPaginated({}, function (err, result) {
 }, docsPerPage, anchorId); // pagination options go here
 ```
 
-If you want to request the first page, just ommit the `anchorId` parameter.
+If you want to request the first page, just omit the `anchorId` parameter.
 
 ```
 User.findPaginated({}, function (err, result) {
