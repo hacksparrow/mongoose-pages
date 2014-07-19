@@ -61,7 +61,7 @@ User.findPaginated({}, function (err, result) {
 **Pros**
 
 1. Familiar concept of `docsPerPage` and `pageNumber`.
-2. Can implemented paged navigation system.
+2. Can implement a paged navigation system.
 3. Can jump to any page.
 
 **Cons**
