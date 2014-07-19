@@ -25,12 +25,12 @@ The result object will have the following structure.
 {
     documents: Array; list of documents
     totalPages: Number; total number of pages, as per the `docsPerPage` value
-    prevPage: NUmber; the previous page number
+    prevPage: Number; the previous page number
     nextPage: Number; the next page number
 }
 ```
 
-`prevPage` will be `undefined` for the first page. `nextPage` will be `undefined` for the last page.
+`prevPage` will be undefined for the first page. `nextPage` will be undefined for the last page.
 
 Here is an example of using the the skip method for implementing pagination.
 
@@ -90,7 +90,7 @@ The result object will have the following structure.
 }
 ```
 
-`prevAnchorId` will be `undefined` for the first page. `nextAnchorId` will be `undefined` for the last page.
+`prevAnchorId` will be undefined for the first page. `nextAnchorId` will be undefined for the last page.
 
 Here is an example of using the the anchor method for implementing pagination.
 
