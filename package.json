@@ -1,6 +1,6 @@
 {
   "name": "mongoose-pages",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Developer-friendly pagination plugin for Mongoose ODM",
   "main": "lib/index.js",
   "scripts": {
