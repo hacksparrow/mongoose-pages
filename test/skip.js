@@ -180,6 +180,19 @@ describe('mongoosePages.skip', function() {
             }, 10)
         })
 
+        it('should work with $orderby', function(done) {
+            var condition = {
+                $query: {},
+                $orderby: {}
+            };
+
+            User.findPaginated(condition, function(err, result) {
+                assert.equal(err, null);
+                assert.equal(result.totalPages, 3);
+                done(err);
+            }, 10)
+        })
+
     })
 })
 
